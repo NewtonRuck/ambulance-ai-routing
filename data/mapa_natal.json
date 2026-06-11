@@ -1,1 +1,13 @@
-{} 
+{
+  "nodes": [
+    {"id": "Alecrim", "pos": [10, 20]},
+    {"id": "Tirol", "pos": [15, 25]},
+    {"id": "Ponta Negra", "pos": [30, 10]},
+    {"id": "Hospital Walfredo Gurgel", "pos": [18, 22]}
+  ],
+  "edges": [
+    {"source": "Alecrim", "target": "Tirol", "weight": 5.0},
+    {"source": "Tirol", "target": "Hospital Walfredo Gurgel", "weight": 3.5},
+    {"source": "Ponta Negra", "target": "Tirol", "weight": 12.0}
+  ]
+}
