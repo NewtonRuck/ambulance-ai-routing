@@ -25,29 +25,29 @@ class GraphProblem(Problem):
         super().__init__(initial, goal)
         self.graph = graph
 
-def actions(self, state):
-    # Retorna uma lista com os nomes de todos os bairros conectados ao atual
-    return list(self.graph.neighbors(state))
+    def actions(self, state):
+        # Retorna uma lista com os nomes de todos os bairros conectados ao atual
+        return list(self.graph.neighbors(state))
 
-def result(self, state, action):
-    return action
+    def result(self, state, action):
+        return action
 
-def path_cost(self, c, state1, action, state2):
-    # Consulta o peso da rua que liga state1 a state2
-    # .get('weight', 1) caso a aresta não tenha peso definido
-    custo_do_passo = self.graph[state1][state2].get('weight', 1.0)
-    return c + custo_do_passo
+    def path_cost(self, c, state1, action, state2):
+        # Consulta o peso da rua que liga state1 a state2
+        # .get('weight', 1) caso a aresta não tenha peso definido
+        custo_do_passo = self.graph[state1][state2].get('weight', 1.0)
+        return c + custo_do_passo
 
-def h(self, node):
-    # Calcula a distância em linha reta do nó atual direto para o hospital.
-    self._distancia_euclidiana(node.state, self.goal)
+    def h(self, node):
+        # Calcula a distância em linha reta do nó atual direto para o hospital.
+        self._distancia_euclidiana(node.state, self.goal)
 
-def _distancia_euclidiana(self, estado1, estado2):
-    # Pega as coordenadas (x, y) de cada estado no grafo
-    pos1 = self.graph.nodes[estado1].get('pos')
-    pos2 = self.graph.nodes[estado2].get('pos')
+    def _distancia_euclidiana(self, estado1, estado2):
+        # Pega as coordenadas (x, y) de cada estado no grafo
+        pos1 = self.graph.nodes[estado1].get('pos')
+        pos2 = self.graph.nodes[estado2].get('pos')
 
-    return math.dist(pos1, pos2)
+        return math.dist(pos1, pos2)
 
 class Node:
     def __init__(self, state, parent=None, action=None, path_cost=0):
