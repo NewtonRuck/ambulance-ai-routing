@@ -6,7 +6,7 @@ class AmbulanceAgent:
 
         self.environment = environment
         self.current_location = start_location
-        self.false_positive_rate = self.false_positive_rate
+        self.false_positive_rate = self.false_positive
         self.prior_prob = prior_prob
         # Um dicionario que mapeia cada rua para a probabilidade dela estar engarrafada
         self.beliefs = {}
@@ -21,7 +21,7 @@ class AmbulanceAgent:
 
     def update_beliefs(self, edge, sensor_alert):
         # Atualiza a probabilidade real de um bloqueio com base no Teorema de Bayes
-        edge = tuple(sorted((u, v)))
+        edge = tuple(sorted(edge))
         # Se a rua que o sensor tenta atualizar nao existe para o agente, a funcao simplesmente nao retorna nada.
         if edge not in self.beliefs:
             return
