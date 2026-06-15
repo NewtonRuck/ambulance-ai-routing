@@ -6,7 +6,8 @@ class AmbulanceAgent:
 
         self.environment = environment
         self.current_location = start_location
-        self.false_positive_rate = self.false_positive
+        self.sensor_accuracy = sensor_accuracy
+        self.false_positive_rate = false_positive
         self.prior_prob = prior_prob
         # Um dicionario que mapeia cada rua para a probabilidade dela estar engarrafada
         self.beliefs = {}

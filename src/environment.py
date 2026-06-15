@@ -6,11 +6,11 @@ class CityEnvironment:
     def __init__(self, map_file_path=None):
         # Inicializa um grafo em branco
         self.graph = nx.Graph()
+        self.base_weights = {}
         # Se for fornecido um caminho, ele carrega o mapa
         if map_file_path:
             self.load_map_from_json(map_file_path)
         # Dicionario para guardar o custo das ruas (sem transito)
-        self.base_weights = {}
 
     def load_map_from_json(self, filepath):
         try:

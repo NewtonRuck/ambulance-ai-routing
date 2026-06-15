@@ -1,8 +1,8 @@
 import os
-from environment import CityEnvironment
-from agent import AmbulanceAgent
-from problem import GraphProblem
-from search import a_star_search
+from src.environment import CityEnvironment
+from src.agent import AmbulanceAgent
+from src.problem import GraphProblem
+from src.search import a_star_search
 import random
 
 def main():
