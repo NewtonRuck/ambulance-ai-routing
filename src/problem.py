@@ -40,7 +40,7 @@ class GraphProblem(Problem):
 
     def h(self, node):
         # Calcula a distância em linha reta do nó atual direto para o hospital.
-        self._distancia_euclidiana(node.state, self.goal)
+        return self._distancia_euclidiana(node.state, self.goal)
 
     def _distancia_euclidiana(self, estado1, estado2):
         # Pega as coordenadas (x, y) de cada estado no grafo
