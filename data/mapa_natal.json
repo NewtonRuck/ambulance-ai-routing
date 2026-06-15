@@ -1,13 +1,39 @@
 {
   "nodes": [
-    {"id": "Alecrim", "pos": [10, 20]},
+    {"id": "Ribeira", "pos": [10, 30]},
+    {"id": "H. Santa Catarina", "pos": [8, 35]},
+    {"id": "Cidade Alta", "pos": [11, 28]},
+    {"id": "Alecrim", "pos": [12, 25]},
+    {"id": "H. Giselda Trigueiro", "pos": [11, 23]},
     {"id": "Tirol", "pos": [15, 25]},
-    {"id": "Ponta Negra", "pos": [30, 10]},
-    {"id": "Hospital Walfredo Gurgel", "pos": [18, 22]}
+    {"id": "Petrópolis", "pos": [18, 28]},
+    {"id": "H. Polícia", "pos": [19, 27]},
+    {"id": "Lagoa Seca", "pos": [15, 23]},
+    {"id": "H. Walfredo Gurgel", "pos": [17, 21]},
+    {"id": "Lagoa Nova", "pos": [16, 20]},
+    {"id": "Nova Descoberta", "pos": [18, 17]},
+    {"id": "Candelária", "pos": [20, 15]},
+    {"id": "Capim Macio", "pos": [22, 12]},
+    {"id": "Ponta Negra", "pos": [25, 5]},
+    {"id": "H. Deoclécio Marques", "pos": [24, 2]}
   ],
   "edges": [
-    {"source": "Alecrim", "target": "Tirol", "weight": 5.0},
-    {"source": "Tirol", "target": "Hospital Walfredo Gurgel", "weight": 3.5},
-    {"source": "Ponta Negra", "target": "Tirol", "weight": 12.0}
+    {"source": "Ribeira", "target": "H. Santa Catarina", "weight": 3.0},
+    {"source": "Ribeira", "target": "Cidade Alta", "weight": 2.0},
+    {"source": "Cidade Alta", "target": "Alecrim", "weight": 2.0},
+    {"source": "Alecrim", "target": "H. Giselda Trigueiro", "weight": 1.5},
+    {"source": "H. Giselda Trigueiro", "target": "Tirol", "weight": 2.5},
+    {"source": "Alecrim", "target": "Tirol", "weight": 3.0},
+    {"source": "Tirol", "target": "Petrópolis", "weight": 2.5},
+    {"source": "Petrópolis", "target": "H. Polícia", "weight": 1.0},
+    {"source": "Tirol", "target": "Lagoa Seca", "weight": 2.0},
+    {"source": "Lagoa Seca", "target": "H. Walfredo Gurgel", "weight": 1.5},
+    {"source": "H. Walfredo Gurgel", "target": "Lagoa Nova", "weight": 1.5},
+    {"source": "Tirol", "target": "Lagoa Nova", "weight": 3.5},
+    {"source": "Lagoa Nova", "target": "Nova Descoberta", "weight": 2.0},
+    {"source": "Nova Descoberta", "target": "Candelária", "weight": 2.5},
+    {"source": "Candelária", "target": "Capim Macio", "weight": 3.0},
+    {"source": "Capim Macio", "target": "Ponta Negra", "weight": 3.5},
+    {"source": "Ponta Negra", "target": "H. Deoclécio Marques", "weight": 2.0}
   ]
 }
