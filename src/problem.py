@@ -24,6 +24,12 @@ class GraphProblem(Problem):
     def __init__(self, initial, goal, graph):
         super().__init__(initial, goal)
         self.graph = graph
+        # Permite que o objetivo seja um unico nó ou uma lista
+        self.goals = goal if isinstance(goal, list) else [goal]
+    
+    def goal_test(self, state):
+        # O objetivo é alcançado se o estado atual estiver na lista de destinos desejados
+        return state in self.goals
 
     def actions(self, state):
         # Retorna uma lista com os nomes de todos os bairros conectados ao atual
@@ -39,15 +45,21 @@ class GraphProblem(Problem):
         return c + custo_do_passo
 
     def h(self, node):
-        # Calcula a distância em linha reta do nó atual direto para o hospital.
-        return self._distancia_euclidiana(node.state, self.goal)
+        # Se houver multiplos hospitais a heuristica mira na menor distancia
+        distancias = [self._distancia_euclidiana(node.state, g) for g in self.goals]
+        return min(distancias) if distancias else 0.0
 
     def _distancia_euclidiana(self, estado1, estado2):
         # Pega as coordenadas (x, y) de cada estado no grafo
+        if estado1 not in self.graph.nodes or estado2 not in self.graph.nodes:
+            return 0.0
+        
         pos1 = self.graph.nodes[estado1].get('pos')
         pos2 = self.graph.nodes[estado2].get('pos')
 
-        return math.dist(pos1, pos2)
+        if pos1 and pos2:
+            return math.dist(pos1, pos2)
+        return 0.0
 
 class Node:
     def __init__(self, state, parent=None, action=None, path_cost=0):

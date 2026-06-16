@@ -17,7 +17,7 @@ class CityEnvironment:
             with open(filepath, 'r', encoding='utf-8') as f:
                 data = json.load(f)
 
-            # 1. Adiciona Nós (Bairros/Cruzamentos)
+            # 1. Adiciona Nós (Avenidas/Cruzamentos)
             for node_data in data.get('nodes', []):
                 name = node_data['id']
                 position = tuple(node_data['pos'])

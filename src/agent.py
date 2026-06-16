@@ -9,6 +9,8 @@ class AmbulanceAgent:
         self.sensor_accuracy = sensor_accuracy
         self.false_positive_rate = false_positive
         self.prior_prob = prior_prob
+
+        self.carrying_patient = False
         # Um dicionario que mapeia cada rua para a probabilidade dela estar engarrafada
         self.beliefs = {}
         self._initialize_beliefs()
@@ -70,6 +72,34 @@ class AmbulanceAgent:
         caminho_otimo = search_algorithm(problem)
         
         if caminho_otimo:
-            self.current_location = destination
+            # Se o destino for uma lista de hospitais, o algoritmo retorna o caminho mais rapido
+            # Atualizamos a localizacao da ambulancia exatamente para o nó do hospital encontrado
+            self.current_location = caminho_otimo.state
         
         return caminho_otimo
+
+    def atender_chamado(self, local_emergencia, hospitais_disponiveis, problem_class, search_algorithm):
+        print(f"\n[FASE 1] 🚑 Saindo de {self.current_location} para buscar o paciente em {local_emergencia}...")
+        self.carrying_patient = False
+
+        rota_para_paciente = self.decide_route(local_emergencia, problem_class, search_algorithm)
+
+        if not rota_para_paciente:
+            print("❌ Falha Crítica: Nenhuma rota encontrada para o paciente!")
+            return None, None
+        
+        self.carrying_patient = True
+        print(f"🩺 Paciente embarcado em {local_emergencia}! (carrying_patient = {self.carrying_patient})")
+
+        print(f"\n[FASE 2] 🏥 Paciente a bordo. Buscando rota para o hospital mais próximo...")
+        rota_para_hospital = self.decide_route(hospitais_disponiveis, problem_class, search_algorithm)
+
+        if not rota_para_hospital:
+            print("❌ Falha Crítica: Nenhuma rota encontrada para os hospitais!")
+            return rota_para_paciente, None
+        
+        self.carrying_patient = False
+        hospital_escolhido = rota_para_hospital.state
+        print(f"🏥 Paciente entregue com segurança no {hospital_escolhido}! (carrying_patient = {self.carrying_patient})")
+
+        return rota_para_paciente, rota_para_hospital
