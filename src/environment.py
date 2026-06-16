@@ -46,16 +46,15 @@ class CityEnvironment:
             edge = tuple(sorted((u, v)))
             self.base_weights[edge] = data['weight']
     
-    def simulate_congestion(self, u, v, severity_multiplier):
+    def simulate_congestion(self, node, severity_multiplier):
         # Simula um evento externo alterando o peso de uma aresta especifica
-        if self.graph.has_edge(u, v):
-            current_weight = self.graph[u][v]['weight']
-            # Aumenta o custo da via com base na gravidade
-            new_weight = current_weight * severity_multiplier
-            self.graph[u][v]['weight'] = new_weight
-            print(f"⚠️ Trânsito alterado entre {u} e {v}: Custo foi de {current_weight:.1f} para {new_weight:.1f}")
-        else:
-            print(f"Não existe conexão direta entre {u} e {v} para aplicar congestionamento.")
+        if node in self.graph:
+            # Varre todas as avenidas vizinhos a este nó
+            for neighbor in self.graph.neighbors(node):
+                # Pega o peso original da conexão
+                current_weight = self.graph[node][neighbor].get('weight', 1.0)
+                # Multiplica pela penalidade de trânsito
+                self.graph[node][neighbor]['weight'] = current_weight * severity_multiplier 
     
     # probability quer dizer que cada rua tem 20% de chance de ficar engarrafada
     # max_multiplier quer dizer que o custo da rua pode ficar ate 3 vezes maior

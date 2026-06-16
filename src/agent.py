@@ -16,22 +16,18 @@ class AmbulanceAgent:
         self._initialize_beliefs()
     
     def _initialize_beliefs(self):
-        # Preenche a memoria do agente com a probabilidade previa de transito para todas as ruas conhecidas no mapa
-        for u, v in self.environment.graph.edges():
-            # Usa uma tupla ordenada para padronizar chaves em grafos-nao direcionados
-            edge = tuple(sorted((u, v)))
-            self.beliefs[edge] = self.prior_prob
+        # Preenche a memoria do agente com a probabilidade previa de transito para todas as avenidas conhecidas no mapa
+        for node in self.environment.graph.nodes():
+            self.beliefs[node] = self.prior_prob
 
-    def update_beliefs(self, edge, sensor_alert):
-        # Atualiza a probabilidade real de um bloqueio com base no Teorema de Bayes
-        edge = tuple(sorted(edge))
-        # Se a rua que o sensor tenta atualizar nao existe para o agente, a funcao simplesmente nao retorna nada.
-        if edge not in self.beliefs:
+    def update_beliefs(self, node, sensor_alert):
+        # Se a avenida que o sensor tenta atualizar não existe, a função ignora
+        if node not in self.beliefs:
             return
         
         # B: Bloqueio
         # E: Evidencia
-        p_b = self.beliefs[edge] # P(B): Crença atual que o agente tem de que a rua está bloqueada antes de consultar o sensor
+        p_b = self.beliefs[node] # P(B): Crença atual que o agente tem de que a avenida está bloqueada antes de consultar o sensor
         p_not_b = 1.0 - p_b # P(~B): Probabilidade de nao haver bloqueio
 
         if sensor_alert:
@@ -51,21 +47,16 @@ class AmbulanceAgent:
 
         p_b_given_e = numerador / denominador if denominador > 0 else 0.0
 
-        self.beliefs[edge] = p_b_given_e
+        self.beliefs[node] = p_b_given_e
 
     def update_environment_weights(self, threshold=0.7, penalty_factor=5.0):
-        # Verifica as crenças da ambulancia e penaliza o ambiente (aumentando o custo) se a probabilidade de congestionamento for alta
 
-        for edge, prob in self.beliefs.items():
-
-            # Se a chance de bloqueio for maior que o limite...
+        # Verifica as crenças sobre as avenidas e penaliza seus acessos
+        for node, prob in self.beliefs.items():
             if prob > threshold:
-                u, v = edge
-
-                # Multiplica o peso original da aresta usando simulate_congestion
-                self.environment.simulate_congestion(u, v, penalty_factor)
-                # Apos aplicar a penalidade no mapa, reseta a crença dessa via para evitar sua penalizaçao em iteraçoes futuras
-                self.beliefs[edge] = self.prior_prob
+                self.environment.simulate_congestion(node, penalty_factor)
+                # Reseta a crença dessa avenida para evitar punição infinita
+                self.beliefs[node] = self.prior_prob
 
     def decide_route(self, destination, problem_class, search_algorithm):
         problem = problem_class(self.current_location, destination, self.environment.graph)

@@ -18,21 +18,22 @@ def executar_simulacao_completa(env_path, local_partida, local_emergencia, hospi
     print("\n[FASE DE PERCEPÇÃO] Lendo sensores de tráfego...")
     
     if alertas_sensores:
-        for via in alertas_sensores:
-            via_ordenada = tuple(sorted(via))
-            prob_antes = ambulancia.beliefs.get(via_ordenada, ambulancia.prior_prob)
+        for avenida in alertas_sensores:
+            # Pega a probabilidade antes usando apenas a string da avenida
+            prob_antes = ambulancia.beliefs.get(avenida, ambulancia.prior_prob)
             
-            print(f"  🚨 ALERTA RECEBIDO: Possível bloqueio na via {via}.")
+            print(f"  🚨 ALERTA RECEBIDO: Possível bloqueio na avenida {avenida}.")
             
-            ambulancia.update_beliefs(via, sensor_alert=True)
-            prob_depois = ambulancia.beliefs.get(via_ordenada, 0.0)
+            # Atualiza crença baseada na avenida
+            ambulancia.update_beliefs(avenida, sensor_alert=True)
+            prob_depois = ambulancia.beliefs.get(avenida, 0.0)
             
-            print(f"  Teorema de Bayes: Chance de bloqueio foi de {prob_antes*100:.1f}% para {prob_depois*100:.1f}%")
+            print(f"Teorema de Bayes: Chance de bloqueio foi de {prob_antes*100:.1f}% para {prob_depois*100:.1f}%")
         
-        print("\n  Atualizando as penalidades do mapa com base nas crenças...")
+        print("\nAtualizando as penalidades do mapa com base nas crenças...")
         ambulancia.update_environment_weights(threshold=0.65, penalty_factor=5.0)
     else:
-        print("  Nenhum alerta crítico. O agente assume fluxo natural de trânsito.")
+        print(" ✅ Nenhum alerta crítico. O agente assume fluxo natural de trânsito.")
 
     print(f"\n[FASE DE AÇÃO] Calculando rotas usando {nome_algoritmo}...")
     
@@ -121,18 +122,16 @@ def main():
             print("Entrada inválida. Utilizando o padrão 0.85.")
 
     alertas_sensores = []
-    quer_transito = input("\nDeseja simular um alerta de trânsito em alguma via? (s/n): ").strip().lower()
+    quer_transito = input("\n🚦 Deseja simular um alerta de trânsito em alguma avenida? (s/n): ").strip().lower()
 
     if quer_transito == 's':
-        print("\nDefina a via onde o sensor apitou (a via é composta por duas avenidas conectadas).")
-        av1 = input("  Avenida 1 da via: ").strip()
-        av2 = input("  Avenida 2 da via: ").strip()
-        alertas_sensores.append((av1, av2))
+        print("\nDefina a avenida onde o sensor apitou.")
+        av = input("  Nome da Avenida com trânsito: ").strip()
+        alertas_sensores.append(av)
         
-        while input("Deseja adicionar outra via com trânsito? (s/n): ").strip().lower() == 's':
-            b1 = input("  Avenida 1: ").strip()
-            b2 = input("  Avenida 2: ").strip()
-            alertas_sensores.append((b1, b2))
+        while input("Deseja adicionar outra avenida com trânsito? (s/n): ").strip().lower() == 's':
+            av_extra = input("  Nome da Avenida: ").strip()
+            alertas_sensores.append(av_extra)
 
     print("\nInicializando o sistema...")
     executar_simulacao_completa(
