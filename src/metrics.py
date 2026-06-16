@@ -49,7 +49,7 @@ class Metrics:
         report = {
             "sucesso": True,
             "custo_total_trajeto": Metrics.calculate_path_cost(node),
-            "bairros_percorridos": Metrics.calculate_path_length(node),
+            "avenidas_percorridas": Metrics.calculate_path_length(node),
             "eficiencia_da_rota_percentual": Metrics.evaluate_efficiency(node, graph_problem) * 100,
             "rota": [n.state for n in node.path()]
         }
@@ -74,7 +74,7 @@ class Metrics:
                 print("  ❌ Falha ao encontrar rota.")
                 continue
             print(f"  • Custo total do trajeto (Tempo/Trânsito): {r['custo_total_trajeto']:.1f}")
-            print(f"  • Bairros no caminho: {r['bairros_percorridos']}")
+            print(f"  • Avenidas no caminho: {r['avenidas_percorridas']}")
             print(f"  • Eficiência geométrica da rota: {r['eficiencia_da_rota_percentual']:.2f}%")
             if "tempo_de_execucao_ms" in r:
                 print(f"  • Tempo de processamento: {r['tempo_de_execucao_ms']} ms")
